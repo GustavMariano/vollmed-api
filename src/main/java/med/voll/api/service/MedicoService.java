@@ -1,5 +1,7 @@
 package med.voll.api.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,9 +27,14 @@ public class MedicoService {
         return medicoRepository.findAllByAtivoTrue(paginacao).map(ListagemMedicoDto::new);
     }
 
-    public void atualizarMedico(AtualizarMedicoDto dados) {
+    public Optional<Medico> detalharMedico(Long id) {
+        return medicoRepository.findById(id);
+    }
+
+    public Medico atualizarMedico(AtualizarMedicoDto dados) {
         var medico = medicoRepository.getReferenceById(dados.id());
         medico.atualizarInformacoes(dados);
+        return medicoRepository.save(medico);
     }
 
     public void excluirMedico(Long id) {
