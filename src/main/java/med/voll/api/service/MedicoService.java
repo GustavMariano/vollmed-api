@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import med.voll.api.dto.AtualizarMedicoDto;
 import med.voll.api.dto.CadastroMedicoDto;
 import med.voll.api.dto.ListagemMedicoDto;
 import med.voll.api.model.Medico;
@@ -21,6 +22,16 @@ public class MedicoService {
     }
 
     public Page<ListagemMedicoDto> listarMedicos(Pageable paginacao) {
-        return medicoRepository.findAll(paginacao).map(ListagemMedicoDto::new);
+        return medicoRepository.findAllByAtivoTrue(paginacao).map(ListagemMedicoDto::new);
+    }
+
+    public void atualizarMedico(AtualizarMedicoDto dados) {
+        var medico = medicoRepository.getReferenceById(dados.id());
+        medico.atualizarInformacoes(dados);
+    }
+
+    public void excluirMedico(Long id) {
+        var medico = medicoRepository.getReferenceById(id);
+        medico.excluir();
     }
 }
