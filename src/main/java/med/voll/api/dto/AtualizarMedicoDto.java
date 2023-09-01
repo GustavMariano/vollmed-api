@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 
 public record AtualizarMedicoDto(
 
-        @NotNull 
+        @NotNull(message = "Id é obrigatório")
         Long id,
 
         String nome,
